@@ -1,0 +1,25 @@
+Описания инструментов пакета КЭДО для модели (формат ИИО_ОписанияИнструментов). Раздел instructions дописывается к инструкциям ядра.
+
+## instructions
+Кадровый ЭДО (Контур.КЭДО): сотрудники и статусы — kedo_employees, ЛНА — kedo_documents, «почему не работает» — kedo_diagnose, первичная настройка — kedo_setup. Приглашения и ознакомление отправляет только пользователь кнопкой в форме КЭДО, которую открывают kedo_invite и kedo_familiarize.
+
+## kedo_employees
+Сотрудники организаций, сопоставленных в КЭДО, со статусом: not_connected, invited, invite_expired (приглашение просрочено), connected. Отбор: hired_from, hired_to (дата приёма), status, organization. Для «недавно принятых» без дат спроси период или возьми текущий месяц от server_time.
+Ответ: employees (employee, hired, department, position, kedo_status, has_email), count, by_status. Показать — show_in_1c.
+
+## kedo_invite
+Открывает форму КЭДО «Приглашение сотрудников» с этими сотрудниками (kedo_status not_connected или invite_expired). Приглашения уходят, только если пользователь нажал «Пригласить».
+Ответ после закрытия формы: invited, not_invited, skipped (reason), cancelled. Если форму не закрыли до срока — ответ раньше, с form_open: пользователь ещё может пригласить, форму не открывай снова. Отправленное приглашение не отзывается.
+
+## kedo_diagnose
+Почему КЭДО не работает у сотрудника или в организации — по данным расширения КЭДО в 1С. С employees — problems каждого; без них — organizations и employee_problems (code, count, первые employees, text одного из них). Проблема: code, severity (blocker, warning, info), text, fix. Пересказывай своими словами и не утверждай того, что в limits.
+
+## kedo_setup
+Первичная настройка КЭДО («запусти, подключи, настрой КЭДО»). Без open — setup_done, organizations (employees_in_kedo, employees_linked), exchange_enabled, а если не настроено — guide (кнопки мастера для настроек по умолчанию) и wizard_step. С open: true открывает мастер первого запуска КЭДО: вход, соглашение и обмен выполняет пользователь. Ответ после закрытия — то же и cancelled, до срока — form_open.
+
+## kedo_documents
+ЛНА КЭДО со статусом (created, in_approval, approved, rejected, archived), у утверждённых — сводка familiarization (sent, familiarized, not_familiarized, refused, sending). Поиск по text. С document — ещё participants: кто ознакомлен, кто нет. Статусы процессов приходят в 1С из ленты изменений КЭДО.
+
+## kedo_familiarize
+Открывает форму КЭДО «Отправка на ознакомление» утверждённого ЛНА с этими сотрудниками; отправляет пользователь кнопкой в форме. Получают только подключённые к КЭДО, остальных сначала пригласи. Только пока familiarization.sent = false: к отправленной версии получателей добавляют в форме «Процесс ознакомления» ЛНА, не этим инструментом.
+Ответ после закрытия: sent, not_sent, skipped (reason), cancelled. Если форму не закрыли до срока — ответ раньше, с form_open: пользователь ещё может отправить, форму не открывай снова.

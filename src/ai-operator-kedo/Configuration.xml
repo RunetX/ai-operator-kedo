@@ -47,7 +47,7 @@
 			<ConfigurationExtensionCompatibilityMode>Version8_3_20</ConfigurationExtensionCompatibilityMode>
 			<ScriptVariant>Russian</ScriptVariant>
 			<Vendor>RunetX</Vendor>
-			<Version>0.1.5.1</Version>
+			<Version>0.2.0.0</Version>
 			<BriefInformation>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
@@ -92,6 +92,8 @@
 			<CommonModule>ИИОК_ОзнакомлениеКлиент</CommonModule>
 			<CommonModule>ИИОК_Настройка</CommonModule>
 			<CommonModule>ИИОК_НастройкаКлиент</CommonModule>
+			<CommonModule>ИИОК_Подключение</CommonModule>
+			<CommonModule>ИИОК_ПодключениеКлиент</CommonModule>
 			<CommonTemplate>ИИОК_ОписанияИнструментов</CommonTemplate>
 			<CommonTemplate>ИИОК_ПреднастройкаМаскирования</CommonTemplate>
 		</ChildObjects>

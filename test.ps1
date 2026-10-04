@@ -63,17 +63,23 @@ if (-not $process.WaitForExit($TimeoutSec * 1000)) {
 if (-not (Test-Path $report)) { throw "Нет отчёта ${report}: тесты не запустились (код клиента $($process.ExitCode))" }
 
 [xml]$junit = Get-Content $report -Raw -Encoding utf8
-$cases = $junit.SelectNodes('//testcase')
-$failed = @($cases | Where-Object { $_.failure -or $_.error })
-$skipped = @($cases | Where-Object { $_.skipped })
-foreach ($case in $failed) {
-	$node = if ($case.failure) { $case.failure } else { $case.error }
-	$message = if ($node -is [string]) { $node } else { $node.message }
-	Write-Host "  FAIL $($case.classname) :: $($case.name)"
-	Write-Host "       $message"
+$cases = @($junit.SelectNodes('//testcase'))
+# Узлы ищутся XPath: пустой <failure/> PowerShell читает как пустую строку, и проверка истинности его теряет.
+$failed = @($cases | Where-Object { $_.SelectSingleNode('failure | error') })
+$skipped = @($cases | Where-Object { $_.SelectSingleNode('skipped') })
+foreach ($case in $failed + $skipped) {
+	$node = $case.SelectSingleNode('failure | error | skipped')
+	$message = if ($node.GetAttribute('message')) { $node.GetAttribute('message') } else { $node.InnerText }
+	Write-Host "  $(if ($node.Name -eq 'skipped') { 'SKIP' } else { 'FAIL' }) $($case.classname) :: $($case.name)"
+	if ($message) { Write-Host "       $message" }
 }
 Write-Host ("Тестов: {0}, упало: {1}, пропущено: {2}" -f $cases.Count, $failed.Count, $skipped.Count)
+if ($skipped.Count -gt 0) { Write-Warning 'Пропущенные тесты не проверили свой сценарий: в базе нет нужных им данных (причина — под SKIP)' }
 
+$problems = @()
+if ($cases.Count -eq 0) { $problems += 'в отчёте нет ни одного теста' }
+if ($failed.Count -gt 0) { $problems += "упало $($failed.Count)" }
 $exitCode = if (Test-Path $exitCodeFile) { (Get-Content $exitCodeFile -Raw).Trim() } else { '' }
-if ($failed.Count -gt 0 -or ($exitCode -and $exitCode -ne '0')) { throw "Тесты не прошли (код YAxUnit: $exitCode)" }
+if ($exitCode -ne '0') { $problems += "код YAxUnit: $(if ($exitCode) { $exitCode } else { 'нет файла' })" }
+if ($problems) { throw "Тесты не прошли: $($problems -join '; ')" }
 Write-Host 'Готово.'

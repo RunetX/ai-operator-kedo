@@ -9,13 +9,14 @@
 					<v8:content>ИИ-оператор: пакет КЭДО</v8:content>
 				</v8:item>
 			</Synonym>
-			<Comment>Пакет ИИ-оператора: ядро находит его по окончанию имени _ИИО_Пакеты. Флаг «Включать в командный интерфейс» должен быть выключен.</Comment>
+			<Comment>Пакет ИИ-оператора: ядро находит его по окончанию имени _ИИО_Пакеты; флаг «Включать в командный интерфейс» должен быть выключен</Comment>
 			<IncludeHelpInContents>false</IncludeHelpInContents>
 			<IncludeInCommandInterface>false</IncludeInCommandInterface>
 			<UseOneCommand>false</UseOneCommand>
 			<Explanation/>
 			<Picture/>
 			<Content>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ИИОК_СостояниеПакета</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ИИОК_ПакетКлиент</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ИИОК_ПакетСервер</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonTemplate.ИИОК_ОписанияИнструментов</xr:Item>

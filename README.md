@@ -10,7 +10,7 @@
 ![КЭДО](https://img.shields.io/badge/КЭДО-1.26%2B-blue)
 ![Протокол](https://img.shields.io/badge/MCP-Streamable_HTTP-blue)
 
-<a href="https://infostart.ru/1c/articles/2806328/"><img src="docs/infostart.svg" alt="Инфостарт" height="28"></a>
+<a href="https://infostart.ru/1c/articles/2806328/"><img src="https://infostart.ru/bitrix/templates/sandbox_empty/assets/tpl/abo/img/logo.svg" alt="Инфостарт" height="28"></a>
 
 О надстройке на Инфостарте: [ИИ-оператор управляет КЭДО](https://infostart.ru/1c/articles/2806328/).
 
